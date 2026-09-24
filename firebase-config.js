@@ -189,7 +189,7 @@ function escucharMensajes() {
         mostrarNotificacionLocal({
             title: title || 'AGRO SOLUCION',
             body: body || 'Tienes un nuevo mensaje',
-            icon: icon || '/Imagenes/logo/Logo.png',
+            icon: icon || '/Imagenes/logo/Logo agro.png',
             image: image,
             data: payload.data
         });

@@ -93,7 +93,7 @@ exports.handler = async (event, context) => {
                 titulo: data.title || data.titulo,
                 mensaje: data.body || data.mensaje,
                 tipo: data.tipo || 'general',
-                icono: data.icon || data.icono || '/Imagenes/logo/Logo.png',
+                icono: data.icon || data.icono || '/Imagenes/logo/Logo agro.png',
                 url: data.url || '/',
                 timestamp: data.timestamp?.toMillis() || Date.now(),
                 createdAt: data.createdAt?.toMillis() || data.timestamp?.toMillis() || Date.now()

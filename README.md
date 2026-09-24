@@ -274,8 +274,7 @@ Edita `styles.css`:
 ### Cambiar Logo
 
 Reemplaza los archivos en `Imagenes/logo/`:
-- `Logo.png` (principal)
-- `logo 72x72.png`, `logo 96x96.png`, etc. (iconos PWA)
+ `Logo agro.png` (principal)
 
 Actualiza `manifest.json` si cambias nombres de archivos.
 

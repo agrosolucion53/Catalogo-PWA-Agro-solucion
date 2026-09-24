@@ -159,7 +159,7 @@ exports.handler = async (event, context) => {
                 mensaje: body,
                 tipo: data?.tipo || 'general',
                 icono: data?.icono || '🔔',
-                icon: icon || '/Imagenes/logo/Logo.png',
+                icon: icon || '/Imagenes/logo/Logo agro.png',
                 url: url || '/',
                 timestamp: new Date().toISOString(),
                 // Datos adicionales

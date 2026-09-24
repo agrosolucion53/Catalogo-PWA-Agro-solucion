@@ -4668,63 +4668,53 @@ body.modo-oscuro .pie-pagina {
 
 .instalar-app-final {
     display: block;
-    padding: 2.5rem 1rem 0;
+    max-width: 1200px;
+    margin: 1.5rem auto 0;
+    padding: 1.25rem 1rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .instalar-app-final-contenido {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1.5rem;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
-    background: #e6f4ea;
-    border: 1px solid #9bcca8;
-    border-radius: 8px;
-}
-
-.instalar-app-final h2 {
-    margin: 0 0 0.35rem;
-    color: var(--color-primario);
-    font-size: 1.3rem;
-}
-
-.instalar-app-final p {
-    margin: 0;
+    justify-content: center;
 }
 
 .btn-instalar-final {
-    flex: 0 0 auto;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    border: 0;
+    min-height: 42px;
+    padding: 0.65rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.55);
     border-radius: 8px;
-    background: var(--color-primario);
+    background: rgba(255, 255, 255, 0.08);
     color: #fff;
     font: inherit;
     font-weight: 700;
     cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 .btn-instalar-final:hover {
-    background: var(--color-secundario);
+    background: #fff;
+    border-color: #fff;
+    color: var(--color-primario);
+    transform: translateY(-1px);
 }
 
-body.modo-oscuro .instalar-app-final-contenido {
-    background: #183c28;
-    border-color: #3f7a50;
+.btn-instalar-final:focus-visible {
+    outline: 3px solid #fbbf24;
+    outline-offset: 3px;
 }
 
 @media (max-width: 600px) {
-    .instalar-app-final-contenido {
-        align-items: stretch;
-        flex-direction: column;
+    .instalar-app-final {
+        margin-top: 1rem;
     }
 
     .btn-instalar-final {
+        width: 100%;
         justify-content: center;
     }
 }
@@ -11800,7 +11790,7 @@ body.banner-oculto .contenedor {
     text-align: left;
     background:
         linear-gradient(120deg, rgba(6, 78, 32, 0.92) 0%, rgba(16, 107, 47, 0.9) 45%, rgba(16, 107, 47, 0.75) 100%),
-        url('./Imagenes/logo/Logo.png');
+        url('./Imagenes/logo/Logo agro.png');
     background-size: cover;
     background-position: center;
     border-radius: 22px;

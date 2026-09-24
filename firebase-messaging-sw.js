@@ -32,7 +32,7 @@ messaging.onBackgroundMessage((payload) => {
     const notificationTitle = payload.notification?.title || 'AGRO SOLUCION';
     const notificationOptions = {
         body: payload.notification?.body || 'Tienes una nueva notificación',
-        icon: payload.notification?.icon || '/Imagenes/logo/Logo.png',
+        icon: payload.notification?.icon || '/Imagenes/logo/Logo agro.png',
         image: payload.notification?.image,
         badge: '/Imagenes/logo/logo 96x96.png',
         tag: payload.data?.tag || 'default',

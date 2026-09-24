@@ -1278,7 +1278,10 @@ function renderizarProductos() {
     }
     
     const tieneSubcategorias = Boolean(SUBCATEGORIAS_POR_CATEGORIA[filtroActual]);
-    const mostrarGrupos = filtroActual === 'todos' || (tieneSubcategorias && subfiltroCategoriaActual === 'todos');
+    const tieneOrdenamientoActivo = Boolean(ordenamientoActual.precio || ordenamientoActual.popularidad);
+    const mostrarGrupos = !tieneOrdenamientoActivo && (
+        filtroActual === 'todos' || (tieneSubcategorias && subfiltroCategoriaActual === 'todos')
+    );
 
     // Mantener cada categoría agrupada por subcategoría y luego por nombre.
     productosFiltrados = mostrarGrupos
@@ -2689,9 +2692,9 @@ function mostrarNotificacionPush(titulo, mensaje, url = '/') {
     // Opciones de la notificación
     const opciones = {
         body: mensaje,
-        icon: './Imagenes/logo/Logo.png',
+        icon: './Imagenes/logo/Logo agro.png',
         badge: './Imagenes/iconos/96x96/96x96.png',
-        image: './Imagenes/logo/Logo.png', // Imagen grande
+        image: './Imagenes/logo/Logo agro.png', // Imagen grande
         vibrate: [200, 100, 200], // Patrón de vibración
         tag: 'agro-solucion-' + Date.now(), // ID único
         requireInteraction: false, // Se cierra automáticamente
@@ -3031,7 +3034,7 @@ class GestorNotificaciones {
         // Configurar opciones según prioridad
         const opciones = {
             body: mensaje,
-            icon: './Imagenes/logo/Logo.png',
+            icon: './Imagenes/logo/Logo agro.png',
             badge: './Imagenes/iconos/96x96/96x96.png',
             vibrate: prioridad === 'alta' ? [300, 100, 300] : [200, 100, 200],
             tag: `${tipo}-${Date.now()}`,
@@ -4878,8 +4881,8 @@ class CarruselRecetas {
  * Función global para filtrar recetas y productos
  * Conecta las recetas con el sistema de filtrado del catálogo
  */
-function filtrarReceta(categoria, nombreReceta) {
-    console.log(`🔍 Filtrando productos para: ${nombreReceta} (categoría: ${categoria})`);
+function filtrarReceta(categoria, nombreReceta, subcategoria = 'todos') {
+    console.log(`🔍 Filtrando productos para: ${nombreReceta} (categoría: ${categoria}, subcategoría: ${subcategoria})`);
     
     // Actualizar el campo de búsqueda si existe
     const campoBusqueda = document.getElementById('campoBusqueda');
@@ -4890,10 +4893,13 @@ function filtrarReceta(categoria, nombreReceta) {
     // Llamar a la función de filtrado existente
     if (typeof filtrarPorCategoria === 'function') {
         // Buscar el botón de filtro correspondiente
-        const btnFiltro = document.querySelector(`[onclick*="${categoria}"]`);
+        const btnFiltro = document.querySelector(`.btn-filtro[data-categoria="${categoria}"]`);
         
         if (btnFiltro) {
             filtrarPorCategoria(categoria, btnFiltro);
+            if (subcategoria !== 'todos' && SUBCATEGORIAS_POR_CATEGORIA[categoria]) {
+                filtrarSubcategoria(subcategoria);
+            }
         } else {
             // Si no existe el filtro exacto, usar 'todos'
             const btnTodos = document.querySelector('[onclick*="todos"]');
@@ -4925,8 +4931,8 @@ function mostrarNotificacionReceta(nombreReceta, categoria) {
     notificacion.className = 'notificacion-receta';
     notificacion.innerHTML = `
         <div class="notificacion-contenido">
-            <span class="notificacion-icono">🍽️</span>
-            <span class="notificacion-texto">Mostrando productos para: <strong>${nombreReceta}</strong></span>
+            <span class="notificacion-icono" aria-hidden="true">🌾</span>
+            <span class="notificacion-texto">Catálogo agropecuario: <strong>${nombreReceta}</strong></span>
             <button class="notificacion-cerrar" onclick="cerrarNotificacion(this)">&times;</button>
         </div>
     `;
@@ -4940,14 +4946,15 @@ function mostrarNotificacionReceta(nombreReceta, categoria) {
                 position: fixed;
                 top: 100px;
                 right: 20px;
-                background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+                background: #075c2a;
                 color: white;
-                padding: 1rem;
-                border-radius: 12px;
-                box-shadow: 0 8px 30px rgba(37, 99, 235, 0.3);
+                padding: 0.85rem 1rem;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 8px;
+                box-shadow: 0 10px 24px rgba(6, 78, 32, 0.25);
                 z-index: 10000;
                 animation: slideInRight 0.3s ease-out;
-                max-width: 350px;
+                max-width: 320px;
             }
             
             .notificacion-contenido {
@@ -4957,12 +4964,12 @@ function mostrarNotificacionReceta(nombreReceta, categoria) {
             }
             
             .notificacion-icono {
-                font-size: 1.5rem;
+                font-size: 1.25rem;
             }
             
             .notificacion-texto {
                 flex: 1;
-                font-size: 0.9rem;
+                font-size: 0.88rem;
                 line-height: 1.4;
             }
             

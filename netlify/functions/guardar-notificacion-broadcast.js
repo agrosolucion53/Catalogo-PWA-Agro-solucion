@@ -100,7 +100,7 @@ exports.handler = async (event, context) => {
             titulo: title, // Para compatibilidad con frontend
             mensaje: body, // Para compatibilidad con frontend
             tipo: tipo || 'general',
-            icon: icon || '/Imagenes/logo/Logo.png',
+            icon: icon || '/Imagenes/logo/Logo agro.png',
             icono: data?.icono || '🔔',
             url: url || '/',
             data: data || {},
