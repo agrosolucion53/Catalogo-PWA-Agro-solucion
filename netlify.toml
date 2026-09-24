@@ -1,0 +1,95 @@
+# netlify.toml
+# Configuración optimizada para Wompi + Netlify + Firebase (opcional)
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+  command = "echo 'Build completado - Sitio estático con funciones serverless'"
+
+# ============================================
+# CONFIGURACIÓN NETLIFY DEV (LOCAL)
+# ============================================
+[dev]
+  port = 8888
+  publish = "."
+  functions = "netlify/functions"
+
+# Redirecciones para las funciones serverless
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# ============================================
+# VARIABLES DE ENTORNO - PRODUCCIÓN
+# ============================================
+# ⚠️ IMPORTANTE: Configura estas variables en Netlify Dashboard
+# Site settings > Environment variables
+# NO las dejes hardcodeadas aquí por seguridad
+# ============================================
+
+[context.production.environment]
+  # Wompi - Llaves de PRODUCCIÓN
+  # WOMPI_PUBLIC_KEY = "pub_prod_TU_LLAVE_PUBLICA_REAL"
+  # WOMPI_PRIVATE_KEY = "prv_prod_TU_LLAVE_PRIVADA_REAL"
+  
+  # Firebase (opcional - solo para reseñas)
+  # FIREBASE_PROJECT_ID = "tu-proyecto-firebase"
+  # FIREBASE_SERVICE_ACCOUNT_B64 = "base64_de_tu_service_account"
+
+# ============================================
+# VARIABLES DE ENTORNO - DEPLOY PREVIEWS
+# ============================================
+[context.deploy-preview.environment]
+  # Wompi - Llaves de PRUEBA
+  # WOMPI_PUBLIC_KEY = "pub_test_QhUoFSL5mYyzHcfweWwfHT4JNI3jHujU"
+  # WOMPI_PRIVATE_KEY = "prv_test_TU_LLAVE_PRIVADA_DE_PRUEBA"
+
+# ============================================
+# VARIABLES DE ENTORNO - BRANCH DEPLOYS
+# ============================================
+[context.branch-deploy.environment]
+  # Wompi - Llaves de PRUEBA
+  # WOMPI_PUBLIC_KEY = "pub_test_QhUoFSL5mYyzHcfweWwfHT4JNI3jHujU"
+  # WOMPI_PRIVATE_KEY = "prv_test_TU_LLAVE_PRIVADA_DE_PRUEBA"
+
+# ============================================
+# HEADERS DE SEGURIDAD
+# ============================================
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# Headers CORS para las funciones serverless
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
+
+# Headers para recursos estáticos (cache)
+[[headers]]
+  for = "/Imagenes/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

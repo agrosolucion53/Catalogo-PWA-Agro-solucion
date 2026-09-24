@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 Diagnóstico Wompi - AGRO SOLUCION</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+
+        .test-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .status.success {
+            background: #4caf50;
+            color: white;
+        }
+
+        .status.error {
+            background: #f44336;
+            color: white;
+        }
+
+        .status.warning {
+            background: #ff9800;
+            color: white;
+        }
+
+        .status.info {
+            background: #2196f3;
+            color: white;
+        }
+
+        .test-result {
+            margin: 10px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #ddd;
+        }
+
+        .test-result.success {
+            border-left-color: #4caf50;
+            background: #f1f8f4;
+        }
+
+        .test-result.error {
+            border-left-color: #f44336;
+            background: #fef1f1;
+        }
+
+        .test-result.warning {
+            border-left-color: #ff9800;
+            background: #fff8e1;
+        }
+
+        .code {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        .code .key {
+            color: #66d9ef;
+        }
+
+        .code .string {
+            color: #a6e22e;
+        }
+
+        .code .comment {
+            color: #75715e;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin: 5px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .info-box h3 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+        }
+
+        .info-box li {
+            margin: 5px 0;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Diagnóstico de Integración Wompi</h1>
+            <p>Verificación del sistema de pagos</p>
+        </div>
+
+        <div class="content">
+            <div class="test-section">
+                <h2>1️⃣ Configuración Frontend <span class="status info" id="status-frontend">Verificando...</span></h2>
+                <div id="result-frontend"></div>
+            </div>
+
+            <div class="test-section">
+                <h2>2️⃣ Variables de Entorno Backend <span class="status info" id="status-backend">Verificando...</span></h2>
+                <div id="result-backend"></div>
+            </div>
+
+            <div class="test-section">
+                <h2>3️⃣ Conectividad API Wompi <span class="status info" id="status-api">Pendiente</span></h2>
+                <div id="result-api"></div>
+                <button onclick="probarAPIWompi()">Probar Conexión API</button>
+            </div>
+
+            <div class="test-section">
+                <h2>4️⃣ Función Crear Transacción <span class="status info" id="status-transaccion">Pendiente</span></h2>
+                <div id="result-transaccion"></div>
+                <button onclick="probarCrearTransaccion()">Probar Crear Transacción</button>
+            </div>
+
+            <div class="info-box">
+                <h3>📋 Pasos para Configurar Wompi</h3>
+                <ol>
+                    <li><strong>Obtener Credenciales:</strong> Ve a <a href="https://comercios.wompi.co/" target="_blank">comercios.wompi.co</a></li>
+                    <li><strong>Variables de Entorno en Netlify:</strong>
+                        <ul>
+                            <li><code>WOMPI_PUBLIC_KEY</code>: pub_test_... o pub_prod_...</li>
+                            <li><code>WOMPI_PRIVATE_KEY</code>: prv_test_... o prv_prod_...</li>
+                            <li><code>WOMPI_INTEGRITY_SECRET</code>: test_integrity_... o prod_integrity_...</li>
+                        </ul>
+                    </li>
+                    <li><strong>Configurar en Netlify:</strong> Site Settings → Environment Variables → Add a variable</li>
+                    <li><strong>Redesplegar:</strong> Triggering deploy → Deploy site para aplicar cambios</li>
+                </ol>
+            </div>
+
+            <div class="btn-group">
+                <button onclick="ejecutarTodosDiagnosticos()">🔄 Ejecutar Todos los Tests</button>
+                <button onclick="location.reload()">🔃 Recargar Página</button>
+                <button onclick="window.location.href='index.html'">🏠 Volver al Inicio</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cargar configuración desde script.js
+        const WOMPI_CONFIG = {
+            publicKey: 'pub_prod_oBaaR0X7Wr4IAHkaFEWbZU1orcnq9vNf',
+            apiUrl: 'https://production.wompi.co/v1',
+            backendUrl: '/.netlify/functions',
+            moneda: 'COP'
+        };
+
+        // 1. Verificar configuración frontend
+        function verificarConfiguracionFrontend() {
+            const resultDiv = document.getElementById('result-frontend');
+            const statusDiv = document.getElementById('status-frontend');
+            let errores = [];
+            let advertencias = [];
+
+            // Verificar llave pública
+            if (!WOMPI_CONFIG.publicKey || WOMPI_CONFIG.publicKey === 'TU_LLAVE_PUBLICA_AQUI') {
+                errores.push('❌ WOMPI_CONFIG.publicKey NO está configurada');
+            } else if (!WOMPI_CONFIG.publicKey.startsWith('pub_')) {
+                errores.push('❌ La llave pública debe comenzar con "pub_"');
+            } else if (WOMPI_CONFIG.publicKey.startsWith('pub_test_')) {
+                advertencias.push('⚠️ Usando llave de PRUEBA (pub_test_...)');
+            } else if (WOMPI_CONFIG.publicKey.startsWith('pub_prod_')) {
+                advertencias.push('✅ Usando llave de PRODUCCIÓN (pub_prod_...)');
+            }
+
+            // Mostrar resultados
+            let html = '';
+            
+            if (errores.length === 0) {
+                statusDiv.className = 'status success';
+                statusDiv.textContent = '✅ Configurado';
+                
+                html += `<div class="test-result success">
+                    <strong>✅ Configuración Frontend Correcta</strong><br>
+                    Llave pública: ${WOMPI_CONFIG.publicKey.substring(0, 20)}...
+                </div>`;
+            } else {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Error';
+                
+                errores.forEach(error => {
+                    html += `<div class="test-result error">${error}</div>`;
+                });
+            }
+
+            if (advertencias.length > 0) {
+                advertencias.forEach(adv => {
+                    html += `<div class="test-result warning">${adv}</div>`;
+                });
+            }
+
+            html += `<div class="code">
+<span class="comment">// Configuración en script.js</span>
+const WOMPI_CONFIG = {
+    <span class="key">publicKey</span>: <span class="string">'${WOMPI_CONFIG.publicKey}'</span>,
+    <span class="key">apiUrl</span>: <span class="string">'${WOMPI_CONFIG.apiUrl}'</span>,
+    <span class="key">backendUrl</span>: <span class="string">'${WOMPI_CONFIG.backendUrl}'</span>,
+    <span class="key">moneda</span>: <span class="string">'${WOMPI_CONFIG.moneda}'</span>
+};
+            </div>`;
+
+            resultDiv.innerHTML = html;
+        }
+
+        // 2. Verificar backend (variables de entorno)
+        async function verificarBackend() {
+            const resultDiv = document.getElementById('result-backend');
+            const statusDiv = document.getElementById('status-backend');
+
+            try {
+                resultDiv.innerHTML = '<div class="loading"></div> Consultando servidor...';
+                
+                // Intentar crear una transacción vacía para ver el error de configuración
+                const response = await fetch(`${WOMPI_CONFIG.backendUrl}/crear-transaccion-wompi`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({}) // Enviar vacío a propósito
+                });
+
+                const data = await response.json();
+
+                let html = '';
+
+                if (response.status === 500 && data.detalles) {
+                    // Servidor sin configurar
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = '❌ No Configurado';
+                    
+                    html += `<div class="test-result error">
+                        <strong>❌ Variables de entorno NO configuradas</strong><br>
+                        ${data.error}
+                    </div>`;
+
+                    if (data.detalles && data.detalles.length > 0) {
+                        html += '<div class="test-result error"><strong>Faltantes:</strong><ul>';
+                        data.detalles.forEach(det => {
+                            html += `<li>${det}</li>`;
+                        });
+                        html += '</ul></div>';
+                    }
+
+                    if (data.ayuda) {
+                        html += `<div class="info-box">
+                            <h3>💡 Cómo Configurar</h3>
+                            <p>${data.ayuda}</p>
+                        </div>`;
+                    }
+                } else if (response.status === 400) {
+                    // Servidor configurado pero datos inválidos (esto es bueno)
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ Configurado';
+                    
+                    html += `<div class="test-result success">
+                        <strong>✅ Variables de entorno configuradas correctamente</strong><br>
+                        El servidor respondió esperando datos válidos (esto es correcto)
+                    </div>`;
+                } else {
+                    statusDiv.className = 'status warning';
+                    statusDiv.textContent = '⚠️ Verificar';
+                    
+                    html += `<div class="test-result warning">
+                        <strong>⚠️ Respuesta inesperada del servidor</strong><br>
+                        Status: ${response.status}<br>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>`;
+                }
+
+                resultDiv.innerHTML = html;
+
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Error';
+                
+                resultDiv.innerHTML = `<div class="test-result error">
+                    <strong>❌ Error conectando con el backend</strong><br>
+                    ${error.message}
+                </div>`;
+            }
+        }
+
+        // 3. Probar API de Wompi directamente
+        async function probarAPIWompi() {
+            const resultDiv = document.getElementById('result-api');
+            const statusDiv = document.getElementById('status-api');
+
+            try {
+                resultDiv.innerHTML = '<div class="loading"></div> Probando conexión con Wompi...';
+                statusDiv.className = 'status info';
+                statusDiv.textContent = 'Probando...';
+
+                // Intentar obtener información de merchant
+                const url = `${WOMPI_CONFIG.apiUrl}/merchants/${WOMPI_CONFIG.publicKey}`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                let html = '';
+
+                if (response.ok && data.data) {
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ Conectado';
+                    
+                    html += `<div class="test-result success">
+                        <strong>✅ Conexión exitosa con API de Wompi</strong><br>
+                        <strong>Merchant:</strong> ${data.data.name || 'N/A'}<br>
+                        <strong>Email:</strong> ${data.data.email || 'N/A'}
+                    </div>`;
+                } else {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = '❌ Error';
+                    
+                    html += `<div class="test-result error">
+                        <strong>❌ Error conectando con Wompi</strong><br>
+                        Status: ${response.status}<br>
+                        ${data.error?.reason || 'Error desconocido'}
+                    </div>`;
+                }
+
+                resultDiv.innerHTML = html;
+
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Error';
+                
+                resultDiv.innerHTML = `<div class="test-result error">
+                    <strong>❌ Error de red</strong><br>
+                    ${error.message}
+                </div>`;
+            }
+        }
+
+        // 4. Probar creación de transacción completa
+        async function probarCrearTransaccion() {
+            const resultDiv = document.getElementById('result-transaccion');
+            const statusDiv = document.getElementById('status-transaccion');
+
+            try {
+                resultDiv.innerHTML = '<div class="loading"></div> Creando transacción de prueba...';
+                statusDiv.className = 'status info';
+                statusDiv.textContent = 'Probando...';
+
+                const datosPrueba = {
+                    monto: 10000, // $10,000 COP
+                    moneda: 'COP',
+                    referencia: `TEST-${Date.now()}`,
+                    email: 'prueba@test.com',
+                    nombre: 'Usuario de Prueba',
+                    telefono: '3001234567',
+                    productos: [{ nombre: 'Producto de Prueba', cantidad: 1, precio: 10000 }]
+                };
+
+                const response = await fetch(`${WOMPI_CONFIG.backendUrl}/crear-transaccion-wompi`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datosPrueba)
+                });
+
+                const data = await response.json();
+
+                let html = '';
+
+                if (response.ok && data.exito) {
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ Exitoso';
+                    
+                    html += `<div class="test-result success">
+                        <strong>✅ Transacción de prueba creada exitosamente</strong><br>
+                        <strong>Referencia:</strong> ${data.referencia}<br>
+                        <strong>Monto:</strong> $${(data.transaccion.amount_in_cents / 100).toLocaleString('es-CO')}<br>
+                        <a href="${data.checkout_url}" target="_blank" style="display: inline-block; margin-top: 10px; padding: 10px 20px; background: #4caf50; color: white; text-decoration: none; border-radius: 5px;">
+                            🔗 Abrir Checkout de Prueba
+                        </a>
+                    </div>`;
+
+                    html += `<div class="code">
+<span class="comment">// Respuesta del servidor:</span>
+${JSON.stringify(data, null, 2)}
+                    </div>`;
+                } else {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = '❌ Error';
+                    
+                    html += `<div class="test-result error">
+                        <strong>❌ Error creando transacción</strong><br>
+                        ${data.error || 'Error desconocido'}
+                    </div>`;
+
+                    if (data.detalles) {
+                        html += '<div class="test-result error"><strong>Detalles:</strong><ul>';
+                        if (Array.isArray(data.detalles)) {
+                            data.detalles.forEach(det => {
+                                html += `<li>${det}</li>`;
+                            });
+                        } else {
+                            html += `<li>${data.detalles}</li>`;
+                        }
+                        html += '</ul></div>';
+                    }
+                }
+
+                resultDiv.innerHTML = html;
+
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Error';
+                
+                resultDiv.innerHTML = `<div class="test-result error">
+                    <strong>❌ Error en la petición</strong><br>
+                    ${error.message}
+                </div>`;
+            }
+        }
+
+        // Ejecutar todos los diagnósticos
+        async function ejecutarTodosDiagnosticos() {
+            verificarConfiguracionFrontend();
+            await verificarBackend();
+            await probarAPIWompi();
+            await probarCrearTransaccion();
+        }
+
+        // Auto-ejecutar al cargar
+        window.addEventListener('DOMContentLoaded', () => {
+            verificarConfiguracionFrontend();
+            verificarBackend();
+        });
+    </script>
+</body>
+</html>

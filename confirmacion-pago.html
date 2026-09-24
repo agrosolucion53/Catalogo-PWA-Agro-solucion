@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Pago - AGRO SOLUCION</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <link rel="icon" type="image/png" href="./Imagenes/logo/Logo.png">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .contenedor-confirmacion {
+            max-width: 800px;
+            margin: 8rem auto 4rem;
+            padding: 2rem;
+        }
+
+        .tarjeta-confirmacion {
+            background: var(--tarjeta-clara);
+            border-radius: 1rem;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: var(--sombra);
+        }
+
+        body.modo-oscuro .tarjeta-confirmacion {
+            background: var(--tarjeta-oscura);
+        }
+
+        .icono-estado {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            animation: bounceIn 0.8s ease;
+        }
+
+        .titulo-confirmacion {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--color-primario);
+        }
+
+        .detalles-transaccion {
+            background: var(--fondo-claro);
+            padding: 2rem;
+            border-radius: 0.5rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        body.modo-oscuro .detalles-transaccion {
+            background: var(--fondo-oscuro);
+        }
+
+        .fila-detalle {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--borde-claro);
+        }
+
+        body.modo-oscuro .fila-detalle {
+            border-color: var(--borde-oscuro);
+        }
+
+        .fila-detalle:last-child {
+            border-bottom: none;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--color-primario);
+        }
+
+        .loader-verificacion {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--borde-claro);
+            border-top-color: var(--color-primario);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .acciones-confirmacion {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .contenedor-confirmacion {
+                margin-top: 6rem;
+                padding: 1rem;
+            }
+
+            .tarjeta-confirmacion {
+                padding: 2rem 1rem;
+            }
+
+            .titulo-confirmacion {
+                font-size: 1.5rem;
+            }
+
+            .acciones-confirmacion {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header class="encabezado">
+        <div class="contenedor-nav">
+            <div class="logo">
+                <img src="./Imagenes/logo/Logo.png" alt="Logo" class="logo-img">
+                AGRO SOLUCION
+            </div>
+            <div class="acciones-nav">
+                <button class="btn-tema" onclick="alternarTema()" title="Cambiar tema">
+                    <span id="iconoTema">🌙</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenedor de Confirmación -->
+    <main class="contenedor-confirmacion">
+        <div class="tarjeta-confirmacion" id="contenidoConfirmacion">
+            <!-- Verificando pago... -->
+            <div id="verificando">
+                <div class="loader-verificacion"></div>
+                <h2>⏳ Verificando tu pago...</h2>
+                <p>Por favor espera un momento mientras confirmamos tu transacción.</p>
+            </div>
+
+            <!-- Contenido dinámico se carga aquí -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="pie-pagina">
+        <div class="contenido-pie">
+            <div class="seccion-pie">
+                <h3>📞 Contacto</h3>
+                <p><strong>📱 WhatsApp:</strong> +57 301 765 8820</p>
+                <p><strong>📧 Email:</strong> agrosolucion53@gmail.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Cargar tema guardado
+        function cargarTema() {
+            const temaGuardado = localStorage.getItem('tema');
+            if (temaGuardado === 'oscuro') {
+                document.body.classList.add('modo-oscuro');
+                document.getElementById('iconoTema').textContent = '☀️';
+            }
+        }
+
+        function alternarTema() {
+            document.body.classList.toggle('modo-oscuro');
+            const esModoOscuro = document.body.classList.contains('modo-oscuro');
+            document.getElementById('iconoTema').textContent = esModoOscuro ? '☀️' : '🌙';
+            localStorage.setItem('tema', esModoOscuro ? 'oscuro' : 'claro');
+        }
+
+        // Verificar estado del pago
+        async function verificarPago() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const transaccionId = urlParams.get('id');
+            
+            if (!transaccionId) {
+                mostrarError('No se encontró ID de transacción');
+                return;
+            }
+
+            try {
+                // Llamar al backend para verificar
+                const response = await fetch(
+                    `/.netlify/functions/verificar-pago-wompi?id=${transaccionId}`
+                );
+
+                if (!response.ok) {
+                    throw new Error('Error al verificar pago');
+                }
+
+                const resultado = await response.json();
+                
+                if (resultado.data) {
+                    mostrarResultado(resultado.data);
+                } else {
+                    throw new Error('Respuesta inválida del servidor');
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarError(error.message);
+            }
+        }
+
+        function mostrarResultado(datos) {
+            const contenedor = document.getElementById('contenidoConfirmacion');
+            const status = datos.status;
+            const monto = (datos.amount_in_cents / 100).toLocaleString('es-CO');
+
+            let iconoEstado = '✅';
+            let tituloEstado = '¡Pago Aprobado!';
+            let mensajeEstado = 'Tu pedido ha sido confirmado exitosamente.';
+            let colorEstado = 'var(--color-exito)';
+
+            if (status === 'DECLINED') {
+                iconoEstado = '❌';
+                tituloEstado = 'Pago Rechazado';
+                mensajeEstado = 'Tu pago no pudo ser procesado. Intenta con otro método de pago.';
+                colorEstado = 'var(--color-error)';
+            } else if (status === 'PENDING') {
+                iconoEstado = '⏳';
+                tituloEstado = 'Pago Pendiente';
+                mensajeEstado = 'Tu pago está siendo procesado. Te notificaremos cuando se confirme.';
+                colorEstado = 'var(--color-acento)';
+            } else if (status === 'VOIDED') {
+                iconoEstado = '🚫';
+                tituloEstado = 'Pago Anulado';
+                mensajeEstado = 'Esta transacción ha sido anulada.';
+                colorEstado = 'var(--color-error)';
+            }
+
+            contenedor.innerHTML = `
+                <div class="icono-estado">${iconoEstado}</div>
+                <h1 class="titulo-confirmacion" style="color: ${colorEstado};">${tituloEstado}</h1>
+                <p style="font-size: 1.1rem; margin-bottom: 2rem;">${mensajeEstado}</p>
+
+                <div class="detalles-transaccion">
+                    <h3 style="margin-bottom: 1rem;">📋 Detalles de la Transacción</h3>
+                    <div class="fila-detalle">
+                        <span>Referencia:</span>
+                        <strong>${datos.reference}</strong>
+                    </div>
+                    <div class="fila-detalle">
+                        <span>ID Transacción:</span>
+                        <strong>${datos.id}</strong>
+                    </div>
+                    <div class="fila-detalle">
+                        <span>Estado:</span>
+                        <strong style="color: ${colorEstado};">${status}</strong>
+                    </div>
+                    <div class="fila-detalle">
+                        <span>Método de Pago:</span>
+                        <strong>${datos.payment_method_type || 'N/A'}</strong>
+                    </div>
+                    <div class="fila-detalle">
+                        <span>Monto Total:</span>
+                        <strong>$${monto}</strong>
+                    </div>
+                </div>
+
+                ${status === 'APPROVED' ? `
+                    <div class="mensaje-exito">
+                        <strong>✅ ¡Gracias por tu compra!</strong>
+                        <p>Recibirás un correo de confirmación en breve. Nos pondremos en contacto contigo para coordinar la entrega.</p>
+                    </div>
+                ` : ''}
+
+                ${status === 'DECLINED' ? `
+                    <div class="mensaje-error">
+                        <strong>❌ Pago no procesado</strong>
+                        <p>Puedes intentar nuevamente con otro método de pago o contactarnos por WhatsApp para ayudarte.</p>
+                    </div>
+                ` : ''}
+
+                <div class="acciones-confirmacion">
+                    <a href="/" class="boton boton-primario">
+                        🏠 Volver al inicio
+                    </a>
+                    ${status !== 'APPROVED' ? `
+                        <a href="https://wa.me/573017658820?text=Hola,%20tuve%20problemas%20con%20mi%20pago.%20Referencia:%20${datos.reference}"
+                            class="boton boton-whatsapp" target="_blank">
+                            💬 Contactar por WhatsApp
+                        </a>
+                    ` : ''}
+                </div>
+            `;
+
+            // Limpiar carrito si fue aprobado
+            if (status === 'APPROVED') {
+                localStorage.removeItem('carritoAlimentoDelCielo');
+            }
+        }
+
+        function mostrarError(mensaje) {
+            const contenedor = document.getElementById('contenidoConfirmacion');
+            contenedor.innerHTML = `
+                <div class="icono-estado">⚠️</div>
+                <h1 class="titulo-confirmacion" style="color: var(--color-error);">Error al Verificar Pago</h1>
+                <p style="font-size: 1.1rem; margin-bottom: 2rem;">${mensaje}</p>
+
+                <div class="mensaje-error">
+                    <strong>❌ No pudimos verificar tu pago</strong>
+                    <p>Por favor contacta con nosotros para ayudarte.</p>
+                </div>
+
+                <div class="acciones-confirmacion">
+                    <a href="/" class="boton boton-primario">
+                        🏠 Volver al inicio
+                    </a>
+                    <a href="https://wa.me/573017658820" class="boton boton-whatsapp" target="_blank">
+                        💬 Contactar Soporte
+                    </a>
+                </div>
+            `;
+        }
+
+        // Inicializar al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarTema();
+            verificarPago();
+        });
+    </script>
+</body>
+</html>

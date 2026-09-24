@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diagnóstico Firebase</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 2rem; }
+    .row { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; }
+    button { padding: .6rem 1rem; border-radius: .5rem; border: 1px solid #8883; cursor: pointer; }
+    pre { background: #00000010; padding: 1rem; border-radius: .5rem; overflow: auto; }
+    .ok { color: #0a8a0a; }
+    .fail { color: #b00020; }
+    small { opacity: .75; }
+  </style>
+</head>
+<body>
+  <h1>Diagnóstico de conexión con Firebase</h1>
+  <p>Esta página prueba el endpoint <code>/.netlify/functions/test-firestore</code> para verificar las credenciales y la lectura desde Firestore.</p>
+
+  <div class="row">
+    <button id="btnTest">Probar conexión</button>
+    <label><input type="checkbox" id="chkWrite"> Incluir <strong>escritura</strong> de prueba (temporal)</label>
+    <small>La escritura crea y elimina un doc en <code>diagnostics</code>.</small>
+  </div>
+
+  <h2>Resultado</h2>
+  <div id="status"></div>
+  <pre id="output">(sin ejecutar)</pre>
+
+  <script>
+    const btn = document.getElementById('btnTest');
+    const out = document.getElementById('output');
+    const status = document.getElementById('status');
+    const chkWrite = document.getElementById('chkWrite');
+
+    async function runTest() {
+      out.textContent = 'Ejecutando…';
+      status.textContent = '';
+      const url = `/.netlify/functions/test-firestore?write=${chkWrite.checked}`;
+      try {
+        const res = await fetch(url, { cache: 'no-store' });
+        const json = await res.json();
+        const ok = Boolean(json.ok);
+        status.innerHTML = ok
+          ? '<strong class="ok">Conexión OK</strong>'
+          : '<strong class="fail">Fallo de conexión</strong>';
+        out.textContent = JSON.stringify(json, null, 2);
+      } catch (e) {
+        status.innerHTML = '<strong class="fail">Error llamando a la función</strong>';
+        out.textContent = String(e);
+      }
+    }
+
+    btn.addEventListener('click', runTest);
+  </script>
+</body>
+</html>

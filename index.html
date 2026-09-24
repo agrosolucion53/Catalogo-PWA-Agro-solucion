@@ -1,0 +1,992 @@
+﻿<!DOCTYPE html>
+<html lang="es" data-grammarly="false">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGRO SOLUCION - Agropecuaria Digital PWA</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#106B2F">
+    <meta name="description" content="AGRO SOLUCION - Catalogo digital agropecuario para productos, asesoría y pedidos por WhatsApp.">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..800&family=Montserrat:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="192x192" href="./Imagenes/logo/pwa-icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="./Imagenes/logo/pwa-icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="./Imagenes/logo/pwa-icon-512.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Overlay -->
+    <div class="overlay" id="overlay" onclick="cerrarPanelesAbiertos()"></div>
+
+    <!-- Encabezado -->
+    <header class="encabezado">
+        <div class="contenedor-nav">
+            <div class="logo">
+                <img src="./Imagenes/logo/70448d9d-3f1f-4fbb-9fcc-8440677926c2.png" alt="Logo Agro Solucion" class="logo-img" decoding="async">
+                <div class="logo-brand">
+                    <strong>AGRO SOLUCION</strong>
+                    <span>AGROPECUARIA</span>
+                </div>
+            </div>
+
+            <button class="btn-menu-mobile" type="button" onclick="alternarMenuPrincipal()" aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menú principal">
+                <span class="icono-menu" aria-hidden="true">☰</span>
+                <span class="texto-menu">Menú</span>
+            </button>
+
+            <nav class="menu-principal" id="menuPrincipal" aria-label="Navegacion principal">
+                <a href="#inicio">Inicio</a>
+                <a href="#categoriasAgro">Categorias</a>
+                <a href="#serviciosAgro">Servicios</a>
+                <a href="#grillaProductos">Productos</a>
+                <a href="#contacto">Contacto</a>
+                <button class="menu-ayuda-mobile" type="button" onclick="cerrarMenuPrincipal(); abrirAyudaAgro()">
+                    <span aria-hidden="true">?</span>
+                    Ayuda y soporte
+                </button>
+            </nav>
+
+            <div class="acciones-nav">
+                <div class="buscador-header">
+                    <span aria-hidden="true">🔎</span>
+                    <input type="search" placeholder="Buscar productos" aria-label="Buscar productos" onclick="enfocarBuscadorCatalogo()" onfocus="enfocarBuscadorCatalogo()">
+                </div>
+                <a href="https://wa.me/573017658820?text=Hola%2C%20quiero%20asesoria%20agropecuaria" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-header" title="Escribenos por WhatsApp" aria-label="WhatsApp">💬</a>
+                <button class="btn-tema" onclick="alternarTema()" title="Cambiar tema">
+                    <span id="iconoTema">🌙</span>
+                </button>
+                <button class="btn-centro-notificaciones" id="btnCentroNotif" onclick="alternarCentroNotificaciones()" title="Centro de notificaciones">
+                    🔔
+                    <span class="contador-notif" id="contadorNotif">0</span>
+                </button>
+                <button class="btn-carrito" onclick="alternarCarrito()" title="Ver carrito">
+                    🛒
+                    <span class="contador-carrito" id="contadorCarrito">0</span>
+                </button>
+                <button class="btn-perfil" onclick="abrirAyudaAgro()" title="Ayuda y soporte" aria-label="Ayuda y soporte">
+                    <span aria-hidden="true">?</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Banner Promocional Animado -->
+    <div class="banner-promocional" id="bannerPromocional">
+        <button class="btn-cerrar-banner" onclick="cerrarBanner()" title="Cerrar banner">✕</button>
+        
+        <div class="banner-contenido">
+            <div class="banner-marca">
+                <img src="./Imagenes/logo/70448d9d-3f1f-4fbb-9fcc-8440677926c2.png" alt="Logo Agro Solucion" class="banner-logo-img" decoding="async">
+                <div class="banner-marca-texto">
+                    <strong>AGRO SOLUCION</strong>
+                    <span>AGROPECUARIA</span>
+                </div>
+            </div>
+
+            <div class="banner-texto">
+                <div class="promocion-principal">
+                    <div class="promocion-item">
+                        <span class="icono-promo">🚚</span>
+                        <span class="texto-promo">Asesoria especializada</span>
+                        <span class="detalle-promo">para el sector agropecuario</span>
+                    </div>
+                    <span class="separador-promo">•</span>
+                    <div class="promocion-item">
+                        <span class="icono-promo">🎁</span>
+                        <span class="texto-promo">Atencion por WhatsApp</span>
+                        <span class="detalle-promo">pedidos y soporte rapido</span>
+                    </div>
+                </div>
+                <div class="subtexto-promocion">
+                    <span class="icono-subtexto">🌾</span>
+                    <span>Campo colombiano • Calidad garantizada • Tecnologia y respaldo</span>
+                </div>
+            </div>
+            
+            <div class="banner-acciones">
+                <button class="btn-instalar-banner" onclick="accionInstalarApp()">
+                    📱 Instalar App
+                </button>
+                <button class="btn-ver-promociones" onclick="accionVerPromociones()">
+                    🌾 Ver lineas agro
+                </button>
+                <button class="btn-activar-notificaciones" id="btnActivarNotificaciones" onclick="solicitarPermisoNotificaciones()" title="Activar notificaciones de ofertas">
+                    <span class="icono-notif">🔔</span>
+                    <span class="texto-notif">Ofertas</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <main class="contenedor" id="inicio">
+        <!-- Sección Hero -->
+        <section class="seccion-hero">
+            <p class="hero-kicker">AGRO SOLUCION</p>
+            <h1>Todo para el campo y sus animales</h1>
+            <p>Nutrición animal, productos veterinarios, insumos agrícolas y asesoría especializada para productores, fincas y hogares.</p>
+            <div class="hero-acciones">
+                <button class="btn-llamada-accion" onclick="scrollearAProductos()">
+                    Ver productos
+                </button>
+                <a href="https://wa.me/573017658820?text=Hola%2C%20quiero%20comprar%20en%20AGRO%20SOLUCION" class="btn-hero-secundario" target="_blank" rel="noopener noreferrer">
+                    Atención personalizada por WhatsApp
+                </a>
+            </div>
+            <div class="hero-lineas" aria-label="Beneficios principales">
+                <span>✔ Atención personalizada</span>
+                <span>✔ Productos originales</span>
+                <span>✔ Cotizaciones por volumen</span>
+                <span>✔ Atención por WhatsApp</span>
+            </div>
+        </section>
+
+        <section class="seccion-home-bloques" aria-label="Bloques principales">
+            <article class="home-bloque">
+                <h3>🟢 Cotizaciones por volumen</h3>
+                <p>Solicita precios especiales para compras por volumen.</p>
+            </article>
+            <article class="home-bloque">
+                <h3>🚚 Domicilios y entregas</h3>
+                <p>Consulta disponibilidad y cobertura en tu zona.</p>
+            </article>
+            <article class="home-bloque">
+                <h3>👨 Asesoría agropecuaria</h3>
+                <p>Te ayudamos a elegir el producto adecuado.</p>
+            </article>
+            <article class="home-bloque">
+                <h3>💲 Precios competitivos</h3>
+                <p>Ofrecemos productos de calidad a precios accesibles.</p>
+            </article>
+        </section>
+
+        <!-- Sección Beneficios Visuales -->
+        <section class="seccion-beneficios">
+            <div class="beneficios-contenedor">
+                <h2 class="beneficios-titulo">¿Por qué elegir Agro Solución?</h2>
+                
+                <div class="beneficios-grid" id="beneficiosGrid">
+                    <div class="beneficio-card" data-aos="fade-up" data-aos-delay="100">
+                        <span class="icono-emoji">🌱</span>
+                        <h3 class="beneficio-titulo">Productos de calidad garantizada</h3>
+                        <p class="beneficio-descripcion">Trabajamos con marcas reconocidas para ofrecer productos confiables y de alto rendimiento.</p>
+                    </div>
+
+                    <div class="beneficio-card" data-aos="fade-up" data-aos-delay="200">
+                        <span class="icono-emoji">💛</span>
+                        <h3 class="beneficio-titulo">Precios competitivos todos los días</h3>
+                        <p class="beneficio-descripcion">Ofrecemos precios justos para pequeños, medianos y grandes productores.</p>
+                    </div>
+
+                    <div class="beneficio-card" data-aos="fade-up" data-aos-delay="300">
+                        <span class="icono-emoji">🤝</span>
+                        <h3 class="beneficio-titulo">Asesoría personalizada</h3>
+                        <p class="beneficio-descripcion">Te ayudamos a elegir el producto adecuado según tus necesidades.</p>
+                    </div>
+
+                    <div class="beneficio-card" data-aos="fade-up" data-aos-delay="400">
+                        <span class="icono-emoji">🐄</span>
+                        <h3 class="beneficio-titulo">Todo para tu finca en un solo lugar</h3>
+                        <p class="beneficio-descripcion">Encuentra nutrición animal, productos veterinarios, insumos agrícolas e implementos en un solo lugar.</p>
+                    </div>
+
+                    <div class="beneficio-card" data-aos="fade-up" data-aos-delay="500">
+                        <span class="icono-emoji">🛡️</span>
+                        <h3 class="beneficio-titulo">Confianza y experiencia</h3>
+                        <p class="beneficio-descripcion">Brindamos atención cercana, responsable y comprometida con cada cliente.</p>
+                    </div>
+
+                    <div class="beneficio-card" data-aos="fade-up" data-aos-delay="600">
+                        <span class="icono-emoji">⚙️</span>
+                        <h3 class="beneficio-titulo">Compra fácil desde cualquier dispositivo</h3>
+                        <p class="beneficio-descripcion">Compra desde tu celular o computador y recibe atención rápida por WhatsApp.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Servicios -->
+        <section class="seccion-recetas" id="serviciosAgro">
+            <div class="recetas-contenedor">
+                <div class="recetas-header">
+                    <h2 class="recetas-titulo">Soluciones que generan resultados</h2>
+                    <p class="recetas-descripcion">
+                        Respaldamos cada etapa de tu actividad agropecuaria con productos de calidad, orientación técnica y atención confiable.
+                    </p>
+                </div>
+
+                <div class="carousel" mask>
+                    <article>
+                        <img src="./Imagenes/Carrusel/Nutrición animal de alto rendimiento.png" alt="Nutricion animal de alto rendimiento" loading="lazy" decoding="async">
+                        <h2>Nutrición animal de alto rendimiento</h2>
+                        <div>
+                            <p>Nutrición animal formulada para apoyar el crecimiento, el engorde y la salud productiva de cada especie.</p>
+                            <button class="btn-ver-productos" onclick="filtrarReceta('nutricion_animal', 'Nutrición animal')">
+                                Ver solución
+                            </button>
+                        </div>
+                    </article>
+
+                    <article>
+                        <img src="./Imagenes/Carrusel/Salud animal.png" alt="Salud veterinaria con respaldo" loading="lazy" decoding="async">
+                        <h2>Salud veterinaria con respaldo</h2>
+                        <div>
+                            <p>Medicamentos y tratamientos verificados para prevenir, controlar y recuperar la salud de tus animales con total confianza.</p>
+                            <button class="btn-ver-productos" onclick="filtrarReceta('veterinaria', 'Productos veterinarios')">
+                                Ver solución
+                            </button>
+                        </div>
+                    </article>
+
+                    <article>
+                        <img src="./Imagenes/Carrusel/Insumos para trabajo eficiente.png" alt="Insumos para trabajo eficiente" loading="lazy" decoding="async">
+                        <h2>Insumos para trabajo eficiente</h2>
+                        <div>
+                            <p>Equipos, herramientas y elementos de bioseguridad que optimizan cada proceso y reducen pérdidas en campo.</p>
+                            <button class="btn-ver-productos" onclick="filtrarReceta('implementos', 'Implementos')">
+                                Ver solución
+                            </button>
+                        </div>
+                    </article>
+
+                    <article>
+                        <img src="./Imagenes/Carrusel/asesoria tecnificada.png" alt="Asesoria tecnica profesional" loading="lazy" decoding="async">
+                        <h2>Asesoría técnica profesional</h2>
+                        <div>
+                            <p>Te orientamos con criterio técnico para tomar decisiones que mejoren la productividad y rentabilidad de tu explotación.</p>
+                            <button class="btn-ver-productos" onclick="filtrarReceta('ganaderia', 'Ganaderia')">
+                                Ver solución
+                            </button>
+                        </div>
+                    </article>
+
+                    <article>
+                        <img src="./Imagenes/Carrusel/cuidado integral de mascota.png" alt="Cuidado integral para mascotas" loading="lazy" decoding="async">
+                        <h2>Cuidado integral para mascotas</h2>
+                        <div>
+                            <p>Nutrición animal y productos de cuidado para animales de compañía, con marcas que garantizan bienestar real.</p>
+                            <button class="btn-ver-productos" onclick="filtrarReceta('veterinaria', 'Productos veterinarios')">
+                                Ver solución
+                            </button>
+                        </div>
+                    </article>
+
+                    <article>
+                        <img src="./Imagenes/Carrusel/d634e827-0f15-44be-b591-44ee1e246884.png" alt="Fertilizantes y semillas certificadas" loading="lazy" decoding="async">
+                        <h2>Fertilizantes y semillas certificadas</h2>
+                        <div>
+                            <p>Insumos agrícolas de confianza para mejorar la fertilidad del suelo, fortalecer cultivos y multiplicar tu cosecha.</p>
+                            <button class="btn-ver-productos" onclick="filtrarReceta('agricultura', 'Agricultura')">
+                                Ver solución
+                            </button>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Búsqueda y Filtros -->
+        <section class="seccion-busqueda" id="catalogoProductos">
+            <input 
+                type="text" 
+                class="caja-busqueda" 
+                placeholder="🔍 Buscar productos (ej: pollo, carne, verduras)..." 
+                onkeyup="filtrarProductos()"
+                id="campoBusqueda"
+            >
+
+            <!-- Categorías justo debajo del buscador -->
+            <div class="contenedor-categorias-destacado" id="categoriasAgro">
+                <div class="titulo-categorias">
+                    <h2 class="categorias-heading">Explora nuestros productos</h2>
+                </div>
+
+                <div class="contenedor-filtros" id="contenedorFiltrosCategorias" role="tablist" aria-label="Filtrar productos por categoria agropecuaria"></div>
+                <div class="contenedor-subfiltros" id="contenedorSubfiltrosVeterinarios" role="tablist" aria-label="Filtrar productos veterinarios por tipo" hidden></div>
+            </div>
+            
+            <!-- Filtros de ordenamiento debajo de categorías -->
+            <div class="contenedor-ordenamiento">
+                <div class="grupo-filtro-orden">
+                    <label for="ordenPrecio" class="etiqueta-filtro">
+                        <i class="fas fa-coins"></i>
+                        Ordenar por precio:
+                    </label>
+                    <select id="ordenPrecio" class="select-orden" onchange="aplicarFiltrosOrdenamiento()">
+                        <option value="">Sin orden</option>
+                        <option value="asc">Menor a mayor</option>
+                        <option value="desc">Mayor a menor</option>
+                    </select>
+                </div>
+
+                <div class="grupo-filtro-orden">
+                    <label for="ordenPopularidad" class="etiqueta-filtro">
+                        <i class="fas fa-star"></i>
+                        Ordenar por popularidad:
+                    </label>
+                    <select id="ordenPopularidad" class="select-orden" onchange="aplicarFiltrosOrdenamiento()">
+                        <option value="">Sin orden</option>
+                        <option value="ventas">Más vendidos</option>
+                        <option value="valoracion">Mejor valorados</option>
+                    </select>
+                </div>
+
+                <button class="btn-limpiar-filtros" onclick="limpiarFiltrosOrdenamiento()" title="Limpiar todos los filtros">
+                    <i class="fas fa-broom"></i> Limpiar filtros
+                </button>
+            </div>
+        </section>
+
+        <!-- Grilla de Productos -->
+        <section class="grilla-productos" id="grillaProductos">
+            <!-- Los productos se cargan dinámicamente aquí -->
+        </section>
+
+        <!-- Sección Combos Especiales -->
+        <section class="seccion-combos">
+            <h2 class="titulo-seccion">Promociones AGRO SOLUCION</h2>
+            
+            <div class="tarjeta-combo">
+                <div class="etiqueta-combo">¡AHORRA 5%!</div>
+                <h3 class="titulo-combo">🐄 Combo Ganadero: Protección y Vitalidad</h3>
+                <p class="descripcion-combo">Una solución práctica para apoyar la salud y vitalidad de tu ganado. Combina el control de parásitos de Temisol con el aporte reconstituyente de Cacodil B12 y Olivitan, productos de confianza para el manejo diario. Llévalos juntos con 5% de descuento, ahorra $5.750 y compra fácilmente por WhatsApp o desde tu carrito.</p>
+                <div class="precios-combo">
+                    <span class="precio-normal">$115.000</span>
+                    <span class="precio-descuento">$109.250</span>
+                </div>
+                <div class="ahorro-combo">💰 Ahorras $5.750</div>
+                <div class="items-combo">
+                    <div class="item-combo">
+                        <h4>Temisol 50ml</h4>
+                        <p><strong>$23.000</strong></p>
+                    </div>
+                    <div class="item-combo">
+                        <h4>Cacodil B12 50ml</h4>
+                        <p><strong>$42.000</strong></p>
+                    </div>
+                    <div class="item-combo">
+                        <h4> Olivitan 50ml</h4>
+                        <p><strong>$50.000</strong></p>
+                    </div>
+                </div>
+                <div class="acciones-producto">
+                    <button class="boton boton-primario" onclick="agregarComboAlCarrito('combo-familiar')">
+                        🛒 Agregar Combo - $109.250
+                    </button>
+                    <a href="https://wa.me/573017658820?text=Hola%2C%20quiero%20el%20Combo%20Ganadero%20de%20Temisol%2C%20Cacodil%20B12%20y%20Olivitan%20por%20%24109.250.%20%C2%BFEst%C3%A1%20disponible%3F" 
+                    class="boton boton-whatsapp" target="_blank">
+                        💬 Pedir por WhatsApp
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Programa Compartir y Ganar -->
+        <section class="seccion-referidos" id="compartirGanar">
+            <h2>Comparte y gana descuentos</h2>
+            <span class="etiqueta-desarrollo">En desarrollo: comparte y gana aun puede fallar</span>
+            <p>Por cada <strong>3 veces que compartas</strong>, ganas <strong>$2.000</strong> para tu próxima compra desde $40.000.</p>
+            <small>Solo se registra cuando el compartido se completa o es confirmado por ti. El conteo se guarda localmente en este dispositivo.</small>
+
+            <div class="codigo-referido" id="codigoCompartir">AGRO SOLUCION</div>
+
+            <div class="botones-enlace-ref">
+                <button class="boton boton-primario" onclick="compartirPromocionCliente()">📱 Compartir ahora</button>
+                <button class="boton boton-azul-ref" onclick="copiarEnlaceCompartirCliente()">📋 Copiar enlace</button>
+            </div>
+
+            <div class="metricas-referidos">
+                <div class="metricas-grid">
+                    <div class="contador-ref metrica-item">
+                        <small>Veces compartido</small>
+                        <strong id="contadorCompartidos">0</strong>
+                    </div>
+                    <div class="contador-ref metrica-item">
+                        <small>Descuentos disponibles</small>
+                        <strong id="descuentosDisponiblesCompartir">0</strong>
+                    </div>
+                </div>
+
+                <div class="estado-compartir-card">
+                    <small id="estadoCompartirTexto">Comparte 3 veces para ganar tu primer descuento.</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Reseñas -->
+        <section id="reseñas" class="seccion-resenas" aria-label="Reseñas de clientes">
+            <div class="resenas-contenedor">
+                <!-- Header de la sección -->
+                <div class="resenas-header">
+                    <h2 class="resenas-titulo">Opiniones de clientes</h2>
+                    <p class="resenas-subtitulo">Experiencias reales con nuestra atencion y portafolio agropecuario</p>
+                </div>
+
+                <!-- Estadísticas de reseñas -->
+                <div class="resenas-estadisticas" id="resenasEstadisticas">
+                    <div class="estadistica-item">
+                        <div class="estadistica-numero" id="totalResenas">0</div>
+                        <div class="estadistica-label">Reseñas</div>
+                    </div>
+                    <div class="estadistica-item">
+                        <div class="estadistica-rating" id="ratingPromedio">
+                            <span class="rating-numero">0.0</span>
+                            <div class="estrellas-display" id="estrellasPromedio"></div>
+                        </div>
+                        <div class="estadistica-label">Promedio</div>
+                    </div>
+                </div>
+
+                <!-- Carrusel de reseñas -->
+                <div class="resenas-carrusel" id="resenasCarrusel">
+                    <!-- Controles de navegación -->
+                    <button class="carrusel-btn carrusel-prev" id="btnPrevResenas" 
+                            aria-label="Reseña anterior" disabled>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" 
+                                    stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    
+                    <button class="carrusel-btn carrusel-next" id="btnNextResenas" 
+                            aria-label="Siguiente reseña" disabled>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" 
+                                    stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+
+                    <!-- Track de reseñas -->
+                    <div class="resenas-track" id="resenasTrack">
+                        <!-- Las reseñas se cargarán dinámicamente aquí -->
+                        <div class="resena-placeholder">
+                            <div class="placeholder-icono">💬</div>
+                            <p>Cargando reseñas de nuestros clientes...</p>
+                        </div>
+                    </div>
+
+                    <!-- Indicadores -->
+                    <div class="carrusel-indicadores" id="indicadoresResenas">
+                        <!-- Los indicadores se generarán dinámicamente -->
+                    </div>
+                </div>
+
+                <!-- Formulario para nueva reseña -->
+                <div class="formulario-resena" id="formularioResena">
+                    <h3 class="formulario-titulo">💬 Comparte tu Experiencia</h3>
+                    
+                    <form class="resena-form" id="resenaForm" novalidate>
+                        <!-- Nombre -->
+                        <div class="campo-grupo">
+                            <label for="nombreResena" class="campo-label">Nombre</label>
+                            <input type="text" id="nombreResena" name="nombre" 
+                                    class="campo-input" placeholder="Tu nombre o iniciales" 
+                                    required maxlength="50" autocomplete="name">
+                            <div class="campo-error" id="errorNombre"></div>
+                        </div>
+
+                        <!-- Producto (opcional) -->
+                        <div class="campo-grupo">
+                            <label for="productoResena" class="campo-label">
+                                Producto (opcional)
+                            </label>
+                            <select id="productoResena" name="productoId" class="campo-select">
+                                <option value="">Selecciona un producto...</option>
+                                <!-- Las opciones se cargarán dinámicamente desde la base de productos -->
+                            </select>
+                        </div>
+
+                        <!-- Rating -->
+                        <div class="campo-grupo">
+                            <label class="campo-label">Calificación</label>
+                            <div class="rating-selector" id="ratingSelector" role="radiogroup" 
+                            aria-label="Selecciona tu calificación de 1 a 5 estrellas">
+                                <!-- Orden invertido para que funcione con CSS ~ selector -->
+                                <input type="radio" name="rating" value="5" id="star5" class="rating-input">
+                                <label for="star5" class="estrella" data-value="5" aria-label="5 estrellas">★</label>
+                                
+                                <input type="radio" name="rating" value="4" id="star4" class="rating-input">
+                                <label for="star4" class="estrella" data-value="4" aria-label="4 estrellas">★</label>
+                                
+                                <input type="radio" name="rating" value="3" id="star3" class="rating-input">
+                                <label for="star3" class="estrella" data-value="3" aria-label="3 estrellas">★</label>
+                                
+                                <input type="radio" name="rating" value="2" id="star2" class="rating-input">
+                                <label for="star2" class="estrella" data-value="2" aria-label="2 estrellas">★</label>
+                                
+                                <input type="radio" name="rating" value="1" id="star1" class="rating-input">
+                                <label for="star1" class="estrella" data-value="1" aria-label="1 estrella">★</label>
+                            </div>
+                            <div class="campo-error" id="errorRating"></div>
+                        </div>
+
+                        <!-- Texto de la reseña -->
+                        <div class="campo-grupo">
+                            <label for="textoResena" class="campo-label">Tu Opinión</label>
+                            <textarea id="textoResena" name="texto" class="campo-textarea" 
+                                        placeholder="Cuéntanos qué te pareció nuestro producto o servicio (mínimo 10 caracteres)" 
+                                        required minlength="10" maxlength="500" rows="4"></textarea>
+                            <div class="campo-contador">
+                                <span id="contadorCaracteres">0</span>/500 caracteres
+                            </div>
+                            <div class="campo-error" id="errorTexto"></div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="formulario-acciones">
+                            <button type="submit" class="btn-enviar-resena" id="btnEnviarResena">
+                                <span class="btn-texto">Enviar Reseña</span>
+                                <span class="btn-loading" style="display: none;">
+                                    <svg class="spinner" width="16" height="16" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" 
+                                                stroke-width="2" fill="none" 
+                                                stroke-dasharray="31.416" stroke-dashoffset="31.416">
+                                            <animate attributeName="stroke-dasharray" 
+                                                        dur="2s" values="0 31.416;15.708 15.708;0 31.416" 
+                                                        repeatCount="indefinite"/>
+                                            <animate attributeName="stroke-dashoffset" 
+                                                        dur="2s" values="0;-15.708;-31.416" 
+                                                        repeatCount="indefinite"/>
+                                        </circle>
+                                    </svg>
+                                    Enviando...
+                                </span>
+                            </button>
+                            
+                            <button type="button" class="btn-cancelar-resena" id="btnCancelarResena" 
+                                    style="display: none;">
+                                Cancelar
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Mensaje de estado -->
+                    <div class="mensaje-estado" id="mensajeEstado" style="display: none;">
+                        <div class="mensaje-contenido" id="mensajeContenido"></div>
+                    </div>
+                </div>
+
+                <!-- Estado offline -->
+                <div class="estado-offline" id="estadoOffline" style="display: none;">
+                    <div class="offline-icono">📡</div>
+                    <h4>Sin conexión</h4>
+                    <p>Tu reseña se guardará y se enviará automáticamente cuando tengas conexión.</p>
+                    <div class="reseñas-pendientes" id="resenasPendientes">
+                        <span>Reseñas pendientes: <strong id="contadorPendientes">0</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JSON-LD Schema -->
+            <script type="application/ld+json" id="schemaResenas">
+            {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "AGRO SOLUCION",
+                "aggregateRating": {
+                    "@type": "AggregateRating",
+                    "ratingValue": "0",
+                    "reviewCount": "0"
+                },
+                "review": []
+            }
+            </script>
+        </section>
+
+        <section class="seccion-ubicacion-contacto" aria-label="Ubicacion y contacto">
+            <div class="seccion-header">
+                <h2>Ubicacion y contacto</h2>
+                <p>Atencion profesional para productores, familias y negocios del sector agropecuario.</p>
+            </div>
+            <div class="ubicacion-grid">
+                <article class="tarjeta-ubicacion">
+                    <h3>AGRO SOLUCION</h3>
+                    <p><strong>Direccion:</strong> Puerto Libertador, Cordoba, Colombia (al lado de la Ferreteria San Joaquin)</p>
+                    <p><strong>WhatsApp:</strong> +57 301 765 8820</p>
+                    <p><strong>Horario:</strong> Lunes a Sabado de 8:00 AM a 8:00 PM</p>
+                    <a href="https://wa.me/573017658820?text=Hola%2C%20quiero%20informacion%20de%20AGRO%20SOLUCION" target="_blank" rel="noopener noreferrer" class="boton boton-primario">Contactar ahora</a>
+                </article>
+                <article class="tarjeta-mapa">
+                    <iframe
+                        title="Ubicacion AGRO SOLUCION"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        src="https://www.google.com/maps?q=Puerto%20Libertador%2C%20Cordoba%2C%20Colombia%2C%20al%20lado%20de%20la%20Ferreteria%20San%20Joaquin&output=embed">
+                    </iframe>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- Panel de Notificaciones -->
+    <div class="panel-notificaciones" id="panelNotificaciones">
+        <div class="encabezado-notificaciones">
+            <h2>🔔 Centro de Notificaciones</h2>
+            <button class="btn-cerrar-notificaciones" onclick="alternarCentroNotificaciones()">✕</button>
+        </div>
+        <div class="contenido-notificaciones" id="contenidoNotificaciones">
+            <div class="notificaciones-vacias" id="notificacionesVacias">
+                <div class="icono-vacio">🔔</div>
+                <h3>No hay notificaciones</h3>
+                <p>Te mantendremos informado sobre ofertas y novedades</p>
+                <button class="boton boton-primario" onclick="solicitarPermisoNotificaciones()">
+                    Activar notificaciones
+                </button>
+            </div>
+            <div class="lista-notificaciones" id="listaNotificaciones" style="display: none;">
+                <!-- Las notificaciones se insertarán aquí dinámicamente -->
+            </div>
+        </div>
+        <div class="acciones-notificaciones">
+            <button class="btn-marcar-leidas" onclick="marcarTodasLeidas()" style="display: none;">
+                ✓ Marcar todas como leídas
+            </button>
+            <button class="btn-limpiar-notificaciones" onclick="limpiarNotificaciones()" style="display: none;">
+                🗑️ Limpiar todas
+            </button>
+        </div>
+    </div>
+
+    <!-- Sidebar del Carrito -->
+    <div class="sidebar-carrito" id="sidebarCarrito">
+        <div class="encabezado-carrito">
+            <div>
+                <h2>Mi carrito</h2>
+                <span class="resumen-cantidad-carrito" id="resumenCantidadCarrito">0 productos</span>
+            </div>
+            <button class="btn-cerrar-carrito" onclick="alternarCarrito()">✕</button>
+        </div>
+        <div id="itemsCarrito">
+            <div class="carrito-vacio" id="carritoVacio">
+                <h3>🛒 Tu carrito está vacío</h3>
+                <p>¡Agrega algunos productos deliciosos!</p>
+            </div>
+        </div>
+        <div class="total-carrito" id="totalCarrito" style="display: none;">
+            <div class="etiqueta-resumen-carrito">Resumen de compra</div>
+            <div class="monto-total">
+                <span>Total</span>
+                <strong>$<span id="montoTotal">0</span></strong>
+            </div>
+            
+            <div class="seccion-pago-carrito">
+                <div class="grupo-botones-pago">
+                    <button class="btn-checkout btn-checkout-wa" onclick="finalizarPorWhatsApp()">
+                        <span class="btn-co-icono">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23-1.48 0-2.93-.39-4.19-1.15l-.3-.17-3.12.82.83-3.04-.2-.32a8.188 8.188 0 0 1-1.26-4.38c.01-4.54 3.7-8.24 8.25-8.24M8.53 7.33c-.16 0-.43.06-.66.31-.22.25-.87.85-.87 2.07 0 1.22.89 2.39 1 2.56.14.17 1.76 2.67 4.25 3.73.59.27 1.05.42 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.46-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.16-.48-.27-.25-.14-1.47-.74-1.69-.82-.23-.08-.37-.12-.56.12-.16.25-.64.81-.78.97-.15.17-.29.19-.53.07-.26-.13-1.06-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.12-.24-.01-.39.11-.5.11-.11.27-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.11-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43-.14 0-.3-.01-.46-.01z"/>
+                            </svg>
+                        </span>
+                        <span class="btn-co-texto">
+                            <b>Finalizar por WhatsApp</b>
+                            <small>Confirma tu pedido por mensaje</small>
+                        </span>
+                        <span class="btn-co-flecha" aria-hidden="true">›</span>
+                    </button>
+
+                    <button class="btn-checkout btn-checkout-nequi" onclick="pagarPorNequi()">
+                        <span class="btn-co-icono">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/>
+                            </svg>
+                        </span>
+                        <span class="btn-co-texto">
+                            <b>Pagar por Nequi</b>
+                            <small>Notificación push en tu app</small>
+                        </span>
+                        <span class="btn-co-flecha" aria-hidden="true">›</span>
+                    </button>
+
+                    <button class="btn-checkout btn-checkout-wompi" onclick="procesarPago()">
+                        <span class="btn-co-icono">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                                <line x1="1" y1="10" x2="23" y2="10"/>
+                            </svg>
+                        </span>
+                        <span class="btn-co-texto">
+                            <b>Pagar con Wompi</b>
+                            <small>Tarjeta, PSE, Nequi y más</small>
+                        </span>
+                        <span class="btn-co-flecha" aria-hidden="true">›</span>
+                    </button>
+                </div>
+
+                <p class="pago-seguro-label">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    Transacciones 100% seguras y protegidas
+                </p>
+            </div>
+        </div>
+    </div>
+
+    </div>  
+
+    <!-- Pie de Página -->
+    <footer class="pie-pagina" id="contacto">
+        <div class="contenido-pie">
+            <div class="seccion-pie">
+                <h3>AGRO SOLUCION</h3>
+                <p><strong>📱 WhatsApp:</strong> +57 301 765 8820</p>
+                <p><strong>📧 Email:</strong> agrosolucion53@gmail.com</p>
+                <p><strong>📍 Direccion:</strong> Puerto Libertador, Cordoba (al lado de la Ferreteria San Joaquin)</p>
+                <p><strong>🚚 Cobertura:</strong> Atencion local y pedidos programados</p>
+            </div>
+
+            <div class="seccion-pie">
+                <h3>Redes sociales</h3>
+                <div class="enlaces-sociales">
+                    <a href="https://www.facebook.com/profile.php?id=61591562379798" target="_blank" rel="noopener noreferrer" class="enlace-social" title="Facebook AGRO SOLUCION"> 
+                        <img src="./Imagenes/iconos/96x96/facebook.png" alt="Facebook" loading="lazy" decoding="async" style="width: 25px; height: 25px;">
+                    </a>
+                    <a href="https://www.instagram.com/agrosolucion" target="_blank"rel="noopener noreferrer" class="enlace-social" title="Instagram AGRO SOLUCION">
+                        <img src="./Imagenes/iconos/96x96/Instagram.png" alt="Instagram" loading="lazy" decoding="async" style="width: 25px; height: 25px;">
+                    </a>
+                    <a href="https://www.tiktok.com/@agro.solucin4" target="_blank" rel="noopener noreferrer" class="enlace-social" title="TikTok AGRO SOLUCION">
+                        <img src="./Imagenes/iconos/96x96/tiktok.png" alt="TikTok" loading="lazy" decoding="async" style="width: 25px; height: 25px;">
+                    </a>
+                    <a href="https://wa.me/573017658820"target="_blank" rel="noopener noreferrer" class="enlace-social"  title="WhatsApp">
+                        <img src="./Imagenes/iconos/96x96/Whatsapp.png" alt="WhatsApp" loading="lazy" decoding="async" style="width: 25px; height: 25px;">
+                    </a>
+                </div>
+                <p style="margin-top: 1rem;">Comparte tus historias con <strong>#AgroSolucion</strong></p>
+            </div>
+            <div class="seccion-pie">
+                <h3>Horarios de atencion</h3>
+                <p><strong>Lunes a Sábado:</strong> 7:00 AM - 6:00 PM</p>
+                <p><strong>Domingos:</strong> 7:00 AM - 2:00 PM</p>
+                <p><strong>Entregas:</strong> Lun-Sáb hasta 6:00 PM</p>
+                <p><strong>Pedidos WhatsApp:</strong> 24/7</p>
+            </div>
+            <div class="seccion-pie">
+                <h3>Respaldo profesional</h3>
+                <p>✅ Calidad en cada recomendacion</p>
+                <p>🌾 Portafolio agropecuario integral</p>
+                <p>🚚 Logistica y servicio confiable</p>
+                <p>💳 Pagos digitales seguros</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Prompt de Instalación PWA -->
+    <div class="prompt-instalacion" id="promptInstalacion">
+        <h4>📱 ¡Instala nuestra App!</h4>
+        <p>Accede más rápido a nuestro catálogo desde tu pantalla principal</p>
+        <button class="btn-instalar" onclick="instalarPWA()">⬇️ Instalar App</button>
+        <button onclick="cerrarPromptInstalacion()" style="float: right; background: none; border: none; color: white; font-size: 1.2rem;">✕</button>
+    </div>
+
+    <!-- Botón Flotante de Instalación (FAB) -->
+    <button class="btn-fab-instalar" id="btnFabInstalar" onclick="instalarPWA()" title="Instalar aplicación">
+        <span class="icono-fab"></span>
+        <span class="texto-fab">Instalar App</span>
+    </button>
+
+    <!-- Botón Flotante de WhatsApp -->
+    <a href="https://wa.me/573017658820?text=Hola!%20Estoy%20interesado%20en%20los%20productos%20de%20AGRO%20SOLUCION" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="btn-whatsapp-flotante" 
+        id="btnWhatsAppFlotante"
+        title="Chatea con nosotros por WhatsApp"
+        aria-label="Contactar por WhatsApp">
+        <div class="whatsapp-contenido">
+            <img src="./Imagenes/iconos/96x96/Whatsapp.png" alt="WhatsApp" class="icono-whatsapp-img" loading="lazy" decoding="async">
+            <span class="texto-whatsapp">¿Necesitas ayuda?</span>
+        </div>
+        <!-- Badge de notificación animado -->
+        <span class="badge-whatsapp pulse">
+            <span class="badge-numero">1</span>
+        </span>
+    </a>
+
+    <!-- Notificación In-App -->
+    <div class="notificacion" id="notificacion">
+        <span id="textoNotificacion"></span>
+    </div>
+
+    <!-- Modal de Detalles del Producto -->
+    <div class="modal-producto" id="modalProducto">
+        <div class="modal-overlay" onclick="cerrarModalProducto()"></div>
+        <div class="modal-contenido">
+            <button class="btn-cerrar-modal" onclick="cerrarModalProducto()">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+            
+            <div class="modal-imagen-container">
+                <img src="" alt="" class="modal-imagen" id="modalImagen">
+                <div class="modal-etiqueta" id="modalEtiqueta"></div>
+            </div>
+            
+            <div class="modal-body">
+                <div class="modal-header">
+                    <h2 class="modal-titulo" id="modalTitulo"></h2>
+                    <div class="modal-precio-badge">
+                        <span class="modal-precio" id="modalPrecio"></span>
+                    </div>
+                </div>
+                
+                <div class="modal-meta-info">
+                    <div class="modal-meta" id="modalMeta"></div>
+                    <div class="modal-popularidad" id="modalPopularidad"></div>
+                </div>
+                
+                <div class="modal-descripcion">
+                    <h3 class="modal-seccion-titulo">Descripción</h3>
+                    <p class="modal-texto" id="modalDescripcion"></p>
+                </div>
+                
+                <div class="modal-cantidad-section">
+                    <label class="modal-cantidad-label">Cantidad</label>
+                    <div class="modal-cantidad-controls">
+                        <button class="modal-btn-cantidad" onclick="cambiarCantidadModal(-1)" aria-label="Disminuir cantidad">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                        <span class="modal-cantidad-valor" id="modalCantidad">1</span>
+                        <button class="modal-btn-cantidad" onclick="cambiarCantidadModal(1)" aria-label="Aumentar cantidad">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="modal-acciones">
+                    <button class="modal-btn modal-btn-agregar" onclick="agregarDesdeModal()">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Agregar al carrito</span>
+                    </button>
+                    <button class="modal-btn modal-btn-whatsapp" onclick="comprarWhatsAppModal()">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10 0C4.477 0 0 4.477 0 10c0 1.89.525 3.66 1.438 5.168L.546 18.2a.75.75 0 00.908.908l3.032-.892A9.96 9.96 0 0010 20c5.523 0 10-4.477 10-10S15.523 0 10 0zm5.245 13.947c-.22.617-1.086 1.133-1.518 1.193-.433.06-.836.273-2.814-.586-2.378-1.032-3.9-3.447-4.018-3.605-.118-.158-.963-1.282-.963-2.447s.61-1.737.826-1.975c.216-.238.472-.297.629-.297.157 0 .315.001.452.008.145.007.34-.055.531.405.197.473.673 1.645.732 1.764.059.119.098.258.02.416-.08.158-.118.257-.236.397-.118.139-.248.31-.355.416-.118.118-.24.246-.103.482.137.237.61 1.006 1.31 1.629.9.802 1.658 1.05 1.894 1.169.236.118.374.099.512-.06.138-.158.59-.688.747-.924.157-.236.315-.197.532-.118.216.079 1.379.65 1.615.769.236.118.393.177.452.276.059.1.059.574-.161 1.19z"/>
+                        </svg>
+                        <span>Comprar por WhatsApp</span>
+                    </button>
+                    <button class="modal-btn modal-btn-mayorista" onclick="abrirFormularioMayoristaDesdeModal()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 8h18"/>
+                            <path d="M5 8l2 11h10l2-11"/>
+                            <path d="M9 8V6a3 3 0 016 0v2"/>
+                            <path d="M9 13h6"/>
+                        </svg>
+                        <span>Cotizar por mayor</span>
+                    </button>
+                    <button class="modal-btn modal-btn-similares" onclick="verProductosSimilares()">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" fill="currentColor"/>
+                        </svg>
+                        <span>Ver similares</span>
+                    </button>
+                </div>
+
+                <!-- SECCIÓN DE RESEÑAS DEL PRODUCTO -->
+                <div class="modal-resenas-section" id="modalResenasSection">
+                    <div class="modal-resenas-header">
+                        <h3 class="modal-seccion-titulo">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle;">
+                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                            Opiniones del Producto
+                        </h3>
+                        <div class="modal-resenas-stats" id="modalResenasStats">
+                            <span class="stat-rating">
+                                <span class="stat-numero" id="modalStatRating">0.0</span>
+                                <span class="stat-estrellas" id="modalStatEstrellas"></span>
+                            </span>
+                            <span class="stat-total" id="modalStatTotal">0 reseñas</span>
+                        </div>
+                    </div>
+
+                    <!-- Tabs: Todas / Dejar Reseña -->
+                    <div class="modal-resenas-tabs">
+                        <button class="resenas-tab active" data-tab="lista" onclick="cambiarTabResenas('lista')">
+                            Ver Opiniones
+                        </button>
+                        <button class="resenas-tab" data-tab="formulario" onclick="cambiarTabResenas('formulario')">
+                            Dejar Opinión
+                        </button>
+                    </div>
+
+                    <!-- Tab: Lista de Reseñas -->
+                    <div class="modal-resenas-tab-content active" id="tabListaResenas">
+                        <div class="modal-resenas-lista" id="modalResenasList">
+                            <div class="resenas-placeholder-mini">
+                                <span class="placeholder-icono-mini">💭</span>
+                                <p>Aún no hay opiniones para este producto</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab: Formulario de Nueva Reseña -->
+                    <div class="modal-resenas-tab-content" id="tabFormularioResena">
+                        <form class="modal-resena-form" id="modalResenaForm" onsubmit="enviarResenaProducto(event)">
+                            <div class="form-group-mini">
+                                <label class="form-label-mini">Tu nombre</label>
+                                <input type="text" class="form-input-mini" id="modalResenaNombre" 
+                                        placeholder="Ej: María G." required maxlength="50">
+                            </div>
+
+                            <div class="form-group-mini">
+                                <label class="form-label-mini">Tu calificación</label>
+                                <div class="rating-selector" id="modalRatingSelector">
+                                    <button type="button" class="star-btn" data-rating="1" onclick="seleccionarRatingModal(1)">★</button>
+                                    <button type="button" class="star-btn" data-rating="2" onclick="seleccionarRatingModal(2)">★</button>
+                                    <button type="button" class="star-btn" data-rating="3" onclick="seleccionarRatingModal(3)">★</button>
+                                    <button type="button" class="star-btn" data-rating="4" onclick="seleccionarRatingModal(4)">★</button>
+                                    <button type="button" class="star-btn" data-rating="5" onclick="seleccionarRatingModal(5)">★</button>
+                                </div>
+                                <input type="hidden" id="modalResenaRating" required>
+                            </div>
+
+                            <div class="form-group-mini">
+                                <label class="form-label-mini">Tu opinión</label>
+                                <textarea class="form-textarea-mini" id="modalResenaTexto" 
+                                            placeholder="Cuéntanos tu experiencia con este producto..." 
+                                            required maxlength="300" rows="4"></textarea>
+                                <small class="char-counter" id="modalCharCounter">0/300</small>
+                            </div>
+
+                            <button type="submit" class="btn-enviar-resena-modal">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                                </svg>
+                                Publicar Opinión
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sistema de Actualización Automática -->
+    <script src="auto-update.js" defer></script>
+    
+    <!-- Sistema de Notificaciones -->
+    <script src="notificaciones-sistema.js" defer></script>
+    
+    <!-- Sistema de Sincronización de Notificaciones -->
+    <script src="sync-notificaciones.js" defer></script>
+    
+    <!-- Firebase Cloud Messaging -->
+    <script src="firebase-config.js" defer></script>
+    
+    <!-- jQuery y Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+    <script src="script.js"></script>
+</body>
+
+</html>
