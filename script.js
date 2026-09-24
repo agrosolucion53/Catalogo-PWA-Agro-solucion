@@ -580,13 +580,18 @@ function ocultarPromptInstalacion() {
 
 function actualizarEstadoBotonInstalacion(disponible) {
     const fab = document.getElementById('btnFabInstalar');
-    if (!fab) return;
-    if (disponible) {
+    const instalacionFinal = document.getElementById('instalarAppFinal');
+
+    if (fab && disponible) {
         fab.style.display = 'flex';
         fab.classList.add('pwa-disponible');
-    } else {
+    } else if (fab) {
         fab.style.display = 'none';
         fab.classList.remove('pwa-disponible');
+    }
+
+    if (instalacionFinal) {
+        instalacionFinal.classList.toggle('pwa-disponible', disponible);
     }
 }
 

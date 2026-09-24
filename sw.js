@@ -1,5 +1,5 @@
 
-const CACHE_VERSION = '1.0.79'; // ⭐ Incrementado para sistema de productos dinámicos
+const CACHE_VERSION = '1.0.80'; // Actualizar el SW tras corregir el precache inicial
 const CACHE_NAME = `alimento-del-cielo-v${CACHE_VERSION}`;
 const APP_VERSION = CACHE_VERSION;
 
@@ -519,27 +519,24 @@ function debeCachear(url) {
         'cdnjs.cloudflare.com',
         'unpkg.com',
         'cdn.bootcss.com',
-        'maxcdn.bootstrapcdn.com',
         'stackpath.bootstrapcdn.com',
         'code.jquery.com',
         'ajax.googleapis.com',
         'fonts.googleapis.com',
         'fonts.gstatic.com'
     ];
-    
+
     return !cdnDomains.some(domain => url.includes(domain));
 }
 
-// === ESTRATEGIA DE CACHE PERSONALIZADA ===
 async function cacheFirst(request) {
     const cachedResponse = await caches.match(request);
     if (cachedResponse) {
         return cachedResponse;
     }
-    
+
     try {
         const networkResponse = await fetch(request);
-        // Solo cachear peticiones GET exitosas
         if (request.method === 'GET' && networkResponse.ok && debeCachear(request.url)) {
             const cache = await caches.open(CACHE_NAME);
             cache.put(request, networkResponse.clone());

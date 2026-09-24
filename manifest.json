@@ -2,7 +2,7 @@
   "name": "AGRO SOLUCION - Agropecuaria Digital",
   "short_name": "AGRO SOLUCION",
   "description": "Catálogo agropecuario digital para productos, asesoría y ventas por WhatsApp.",
-  "start_url": "index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#0b1220",
   "theme_color": "#106B2F",
@@ -14,13 +14,13 @@
   "gcm_sender_id": "103953800507",
   "icons": [
     {
-      "src": "./Imagenes/logo/pwa-icon-192.png",
+      "src": "/Imagenes/logo/pwa-icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "./Imagenes/logo/pwa-icon-512.png",
+      "src": "/Imagenes/logo/pwa-icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -28,7 +28,7 @@
   ],
   "screenshots": [
     {
-      "src": "./imagenes/screenshots/Screenshot_1.png",
+      "src": "/Imagenes/screenshots/Screenshot_1.png",
       "sizes": "393x852",
       "type": "image/png",
       "form_factor": "narrow",
@@ -43,7 +43,7 @@
       "url": "/#catalogo",
       "icons": [
         {
-          "src": "./Imagenes/logo/pwa-icon-96.png",
+          "src": "/Imagenes/logo/pwa-icon-96.png",
           "sizes": "96x96",
           "type": "image/png"
         }

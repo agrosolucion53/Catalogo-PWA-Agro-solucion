@@ -4666,6 +4666,69 @@ body.modo-oscuro .pie-pagina {
     transform: scale(1.1);
 }
 
+.instalar-app-final {
+    display: block;
+    padding: 2.5rem 1rem 0;
+}
+
+.instalar-app-final-contenido {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    background: #e6f4ea;
+    border: 1px solid #9bcca8;
+    border-radius: 8px;
+}
+
+.instalar-app-final h2 {
+    margin: 0 0 0.35rem;
+    color: var(--color-primario);
+    font-size: 1.3rem;
+}
+
+.instalar-app-final p {
+    margin: 0;
+}
+
+.btn-instalar-final {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 0;
+    border-radius: 8px;
+    background: var(--color-primario);
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-instalar-final:hover {
+    background: var(--color-secundario);
+}
+
+body.modo-oscuro .instalar-app-final-contenido {
+    background: #183c28;
+    border-color: #3f7a50;
+}
+
+@media (max-width: 600px) {
+    .instalar-app-final-contenido {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .btn-instalar-final {
+        justify-content: center;
+    }
+}
+
 /* === INSTALACIÓN PWA === */
 .prompt-instalacion {
     position: fixed;
