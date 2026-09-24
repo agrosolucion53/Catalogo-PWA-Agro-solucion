@@ -1,5 +1,5 @@
 
-const CACHE_VERSION = '1.0.80'; // Actualizar el SW tras corregir el precache inicial
+const CACHE_VERSION = '1.0.82'; // Actualizar el SW tras corregir el precache inicial
 const CACHE_NAME = `alimento-del-cielo-v${CACHE_VERSION}`;
 const APP_VERSION = CACHE_VERSION;
 
